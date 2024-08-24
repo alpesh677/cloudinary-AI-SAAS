@@ -6,6 +6,7 @@ import { Video } from '@/types'
 import { filesize } from 'filesize'
 import { motion } from "framer-motion"
 import { Clock, Download, FileDown, FileUp } from 'lucide-react'
+import Image from 'next/image'
 
 dayjs.extend(relativeTime);
 
@@ -114,7 +115,7 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onDownload }) => {
                             />
                         )
                     ) : (
-                        <img
+                        <Image
                             src={getThumnailUrl(video.publicId)}
                             alt={video.title}
                             className='w-full h-full object-cover'

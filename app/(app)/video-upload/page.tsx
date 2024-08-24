@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import React, { useState, useEffect } from 'react'
 import { motion } from "framer-motion"
 
-export default function videoUpload() {
+export default function VideoUpload() {
 
     const [file, setFile] = useState<File | null>(null)
     const [title, setTitle] = useState("");
