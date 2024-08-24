@@ -4,6 +4,7 @@ import relativeTime from "dayjs/plugin/relativeTime"
 import { getCldImageUrl, getCldVideoUrl } from 'next-cloudinary'
 import { Video } from '@/types'
 import { filesize } from 'filesize'
+import { motion } from "framer-motion"
 import { Clock, Download, FileDown, FileUp } from 'lucide-react'
 
 dayjs.extend(relativeTime);
@@ -54,9 +55,9 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onDownload }) => {
 
     const formatDuration = useCallback((seconds: number) => {
         const minutes = Math.floor(seconds / 60);
-        const remainingSeconds = seconds % 60;
-        return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`
-    }, [])
+        const remainingSeconds = Math.round(seconds % 60);
+        return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
+    }, []);
 
     const compressionPercentage = Math.round(
         (1 - Number(video.compressedSize) / Number(video.originalSize)) * 100
@@ -71,7 +72,27 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onDownload }) => {
     }
 
     return (
-        <div className='card bg-base-100 transition-all shadow-2xl hover:shadow-xl duration-200'
+        <motion.div
+            initial={{
+                opacity: 0,
+                y: 100,
+            }}
+            whileInView={{
+                y: 0,
+                opacity: 0.8
+            }}
+            transition={{
+                type: "ease-in",
+                duration: 0.2,
+            }}
+            whileHover={{
+                scale: 1.02,
+                opacity: 1
+            }}
+            whileTap={{
+                scale: 0.94,
+            }}
+            className='card bg-base-100 transition-all shadow-2xl hover:shadow-xl duration-200'
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
@@ -102,10 +123,8 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onDownload }) => {
                 }
 
                 <div className="absolute bg-base-100 bottom-2 right-2 bg-opacity-70 px-2 py-1 rounded-lg text-sm flex items-center">
-                    <Clock
-                        size={16}
-                        className='mr-1'
-                    />
+                    <Clock size={16} className='mr-1' />
+                    {formatDuration(video.duration)}
                 </div>
             </figure>
 
@@ -149,7 +168,7 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onDownload }) => {
                     </button>
                 </div>
             </div>
-        </div>
+        </motion.div>
     )
 }
 

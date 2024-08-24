@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react'
 import { CldImage } from 'next-cloudinary';
+import { motion } from "framer-motion"
 
 const socialFormats = {
     "Instagram Square (1:1)": { width: 1080, height: 1080, aspectRatio: "1:1" },
@@ -74,12 +75,29 @@ export default function SocialShare() {
     }
 
     return (
-        <div className='container px-4 max-w-4xl mx-auto'>
+        <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+            className='container px-4 max-w-4xl mx-auto'>
             <h1 className='text-3xl font-bold text-center mb-6 p-4'>
                 Social Media Image Creator
             </h1>
 
-            <div className='card p-4'>
+            <motion.div
+                initial={{
+                    opacity: 0,
+                    y: 100,
+                }}
+                whileInView={{
+                    y: 0,
+                    opacity: 0.8
+                }}
+                transition={{
+                    type: "ease-in",
+                    duration: 0.3,
+                }}
+                className='card p-4'>
                 <div className='card-body'>
                     <h2 className="card-title mb-4">Upload an Image</h2>
                     <div className="form-control">
@@ -160,7 +178,7 @@ export default function SocialShare() {
                         </div>
                     )
                 }
-            </div>
-        </div>
+            </motion.div>
+        </motion.div>
     )
 }

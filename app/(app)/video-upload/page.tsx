@@ -2,6 +2,7 @@
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import React, { useState, useEffect } from 'react'
+import { motion } from "framer-motion"
 
 export default function videoUpload() {
 
@@ -46,7 +47,20 @@ export default function videoUpload() {
         }
     }
     return (
-        <div className='container mx-auto p-2'>
+        <motion.div
+            initial={{
+                opacity: 0,
+                y: 100,
+            }}
+            whileInView={{
+                y: 0,
+                opacity: 0.8
+            }}
+            transition={{
+                type: "ease-in",
+                duration: 0.3,
+            }}
+            className='container mx-auto p-2'>
             <h1 className="text-2xl font-semibold mb-4">Upload Video</h1>
             <form onSubmit={handleSubmit} className='space-y-4'>
                 <div>
@@ -92,6 +106,6 @@ export default function videoUpload() {
                     {isUploading ? "Uploading..." : "Upload"}
                 </button>
             </form>
-        </div>
+        </motion.div>
     )
 }

@@ -7,12 +7,17 @@ import { ImageIcon, LayoutDashboardIcon, LogOutIcon, MenuIcon, Rotate3D, Share2I
 
 
 const sideBarItems = [
-    { href: "/home", label: "Home Page", icon: LayoutDashboardIcon },
-    { href: "/video-upload", label: "Video Upload", icon: UploadIcon },
-    { href: "/Social-share", label: "Social Share", icon: Share2Icon },
+    {
+        href: "/home",
+        label: "Home Page",
+        icon: LayoutDashboardIcon,
+        description: "Main page"
+    },
+    { href: "/video-upload", label: "Video Upload", icon: UploadIcon, description: "Customize your photos!" },
+    { href: "/Social-share", label: "Social Share", icon: Share2Icon, description: "Upload videos,compress them!" },
 ]
 
-export default function layout({
+export default function Layout({
     children,
 }: Readonly<{
     children: React.ReactNode;
@@ -53,7 +58,7 @@ export default function layout({
                         <div className='flex-1'>
                             <Link href={"/"} onClick={handleLogoClick}>
                                 <div className='btn btn-ghost normal-case text-2xl font-bold tracking-tight cursor-pointer'>
-                                    Cloudinary Showcase
+                                    {pathname.split("/").join("").toUpperCase()}
                                 </div>
                             </Link>
                         </div>
@@ -109,7 +114,10 @@ export default function layout({
                                     onClick={() => setSidebarOpen(false)}
                                 >
                                     <item.icon className="w-6 h-6" />
-                                    <span>{item.label}</span>
+                                    <div className="flex flex-col">
+                                        <span>{item.label}</span>
+                                        <p className="text-xs">{item.description}</p>
+                                    </div>
                                 </Link>
                             </li>
                         ))}
