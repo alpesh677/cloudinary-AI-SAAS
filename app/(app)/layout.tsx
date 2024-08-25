@@ -70,6 +70,8 @@ export default function Layout({
                                         <div className="w-8 h-8 rounded-full">
                                             <Image
                                                 src={user.imageUrl}
+                                                width={32}
+                                                height={32}
                                                 alt={
                                                     user.username || user.emailAddresses[0].emailAddress
                                                 }
