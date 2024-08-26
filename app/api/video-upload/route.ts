@@ -17,7 +17,7 @@ interface CloudinaryUploadResult {
 }
 
 const prisma = new PrismaClient();
-console.log("Prisma Client:", prisma);
+// console.log("Prisma Client:", prisma);
 
 export async function POST(request: NextRequest) {
 	try {

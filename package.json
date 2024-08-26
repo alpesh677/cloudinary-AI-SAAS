@@ -3,12 +3,10 @@
 	"version": "0.1.0",
 	"private": true,
 	"scripts": {
-		"dev": "next dev && npx prisma db push && npx prisma generate",
+		"dev": "next dev",
 		"build": "npx prisma generate && next build",
-		"start": "npx prisma db push && npx prisma generate && next start",
-		"lint": "next lint",
-		"postinstall": "prisma generate",
-		"vercel-build": "npx prisma generate && echo 'Prisma Client generated' && next build"
+		"start": "next start",
+		"postinstall": "prisma generate"
 	},
 	"dependencies": {
 		"@clerk/elements": "^0.14.0",
