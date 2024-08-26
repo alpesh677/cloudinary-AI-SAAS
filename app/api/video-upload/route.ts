@@ -1,5 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
-import { PrismaClient } from "@prisma/client";
+// import { PrismaClient } from "@prisma/client";
+import prisma from "@/prisma/index";
 import { v2 as cloudinary } from "cloudinary";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -16,7 +17,7 @@ interface CloudinaryUploadResult {
 	[key: string]: any;
 }
 
-const prisma = new PrismaClient();
+// const prisma = new PrismaClient();
 // console.log("Prisma Client:", prisma);
 
 export async function POST(request: NextRequest) {
