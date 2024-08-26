@@ -8,7 +8,7 @@
 		"start": "npx prisma db push && npx prisma generate && next start",
 		"lint": "next lint",
 		"postinstall": "prisma generate",
-		"vercel-build": "npx prisma generate && next build"
+		"vercel-build": "npx prisma generate && echo 'Prisma Client generated' && next build"
 	},
 	"dependencies": {
 		"@clerk/elements": "^0.14.0",
