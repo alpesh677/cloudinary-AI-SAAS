@@ -1,8 +1,7 @@
+import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
-// import { PrismaClient } from "@prisma/client";
 import prisma from "@/prisma/index";
 import { v2 as cloudinary } from "cloudinary";
-import { NextRequest, NextResponse } from "next/server";
 
 cloudinary.config({
 	cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
@@ -18,7 +17,7 @@ interface CloudinaryUploadResult {
 }
 
 // const prisma = new PrismaClient();
-// console.log("Prisma Client:", prisma);
+console.log("Prisma Client:", prisma);
 
 export async function POST(request: NextRequest) {
 	try {

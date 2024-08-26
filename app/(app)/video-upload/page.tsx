@@ -37,8 +37,9 @@ export default function VideoUpload() {
 
         try {
             const response = await axios.post("/api/video-upload", formData)
-            if (response.status === 200) {
-                router.push("/")
+            console.log(response)
+            if (response.status === 201) {
+                router.push("/home")
             }
         } catch (error) {
             console.log(error)
