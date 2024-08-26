@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 
 let prisma: PrismaClient;
 
-console.log(process.env.NODE_ENV);
+console.log("fnldnfkd:",process.env.NODE_ENV);
 if (process.env.NODE_ENV === "production") {
 	prisma = new PrismaClient();
 } else {
