@@ -7,7 +7,7 @@ cloudinary.config({
 	api_secret: process.env.CLOUDNIARY_API_SECRET,
 });
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
 	if (
 		!process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME ||
 		!process.env.CLOUDINARY_API_KEY ||
@@ -37,6 +37,7 @@ export async function POST(request: Request) {
 					resource_type: "video",
 					folder: "Cloudinary-saas-videos",
 					raw_convert: "google_speech:srt",
+					notification_url : "localhost:3000/api/cloudinary-notification",
 				},
 				(error, result) => {
 					// console.log(result);
