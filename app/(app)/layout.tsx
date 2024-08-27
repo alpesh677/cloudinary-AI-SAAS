@@ -14,8 +14,8 @@ const sideBarItems = [
         icon: LayoutDashboardIcon,
         description: "Main page"
     },
-    { href: "/video-upload", label: "Video Upload", icon: UploadIcon, description: "Customize your photos!" },
-    { href: "/Social-share", label: "Social Share", icon: Share2Icon, description: "Upload videos,compress them!" },
+    { href: "/video-upload", label: "Video Upload", icon: UploadIcon, description: "Upload videos,compress them!" },
+    { href: "/Social-share", label: "Social Share", icon: Share2Icon, description: "Customize your photos!" },
 ]
 
 export default function Layout({

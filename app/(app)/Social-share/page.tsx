@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { CldImage } from 'next-cloudinary';
 import { motion } from "framer-motion"
+import { FileUpload } from '@/components/ui/file-upload';
 
 const socialFormats = {
     "Instagram Square (1:1)": { width: 1080, height: 1080, aspectRatio: "1:1" },
@@ -10,6 +11,7 @@ const socialFormats = {
     "Twitter Post (16:9)": { width: 1200, height: 675, aspectRatio: "16:9" },
     "Twitter Header (3:1)": { width: 1500, height: 500, aspectRatio: "3:1" },
     "Facebook Cover (205:78)": { width: 820, height: 312, aspectRatio: "205:78" },
+    "Passport size image": { width: 400, height: 400, aspectRatio: "1:1" }
 };
 
 type socialFormats = keyof typeof socialFormats
@@ -26,12 +28,13 @@ export default function SocialShare() {
             setIsTransforming(true)
     }, [selectedFormat, uploadedImage])
 
-    const handleSubmit = async (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
+    const handleSubmit = async (files: File[]) => {
 
-        if (!file) {
+        if (files.length === 0) {
             return;
         }
+        const file = files[0];
+
         setIsuploading(true)
 
         const formData = new FormData();
@@ -80,7 +83,7 @@ export default function SocialShare() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
             className='container px-4 max-w-4xl mx-auto'>
-            <h1 className='text-3xl font-bold text-center mb-6 p-4'>
+            <h1 className='text-3xl font-bold text-center mb-1 p-4'>
                 Social Media Image Creator
             </h1>
 
@@ -98,18 +101,13 @@ export default function SocialShare() {
                     duration: 0.3,
                 }}
                 className='card p-4'>
-                <div className='card-body'>
+                <div className={`card-body ${uploadedImage ? 'hidden' : ''}`}>
                     <h2 className="card-title mb-4">Upload an Image</h2>
                     <div className="form-control">
                         <label htmlFor="" className="label">
                             <span className='label-text'>Choose an Image File</span>
                         </label>
-                        <input
-                            type="file"
-                            name="file"
-                            onChange={handleSubmit}
-                            className="file-input file-input-bordered file-input-primary w-full"
-                        />
+                        <FileUpload onChange={handleSubmit} />
                     </div>
                 </div>
                 {
@@ -179,6 +177,6 @@ export default function SocialShare() {
                     )
                 }
             </motion.div>
-        </motion.div>
+        </motion.div >
     )
 }

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import React, { useState, useEffect } from 'react'
 import { motion } from "framer-motion"
+import { FileUpload } from "@/components/ui/file-upload";
 
 export default function VideoUpload() {
 
@@ -89,15 +90,9 @@ export default function VideoUpload() {
                 </div>
                 <div>
                     <label>
-                        <span className="label-text">Description</span>
+                        <span className="label-text">Upload Video :</span>
                     </label>
-                    <input
-                        type='file'
-                        accept='video/*'
-                        onChange={(e) => setFile(e.target.files?.[0] || null)}
-                        className="file-input file-input-bordered w-full"
-                        required
-                    />
+                    <FileUpload onChange={(files) => setFile(files[0] || null)} />
                 </div>
                 <button
                     className='btn btn-primary w-full'

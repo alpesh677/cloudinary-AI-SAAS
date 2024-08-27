@@ -5,10 +5,10 @@ import React, { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSignUp } from "@clerk/nextjs";
 import { EmailAddress } from "@clerk/nextjs/server";
-import SignupForm from "@/app/components/SignupForm";
-import VerifyForm from "@/app/components/VerifyForm";
+import SignupForm from "@/components/SignupForm";
+import VerifyForm from "@/components/VerifyForm";
 
-export default function Page(){
+export default function Page() {
     return <SignUp />;
 }
 
