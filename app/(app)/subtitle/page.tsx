@@ -15,7 +15,7 @@ const cld = new Cloudinary({
     }
 });
 
-export default function page() {
+export default function Page() {
     const [isUploading, setIsUploading] = useState(false)
     const [file, setFile] = useState<File | null>(null)
     const [uploadedVideo, setUploadedVideo] = useState<string | null>(null);
