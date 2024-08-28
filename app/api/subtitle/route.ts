@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
 					resource_type: "video",
 					folder: "Cloudinary-saas-videos",
 					raw_convert: "google_speech:srt",
-					notification_url : "http://localhost:3000/api/cloudinary-notification",
+					notification_url : "https://cloudinary-ai-saas.vercel.app/api/cloudinary-notification",
 				},
 				(error, result) => {
 					// console.log(result);
