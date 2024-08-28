@@ -1,12 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: NextRequest) {
+export async function POST(request: NextRequest) {
+	try {
+		const body = await request.json();
+		console.log("Cloudinary Notification:", body);
 
-    const { public_id, secure_url, notification_type } = await req.json();
+		// You can handle the notification data here, e.g., store the details in your database
 
-    if (notification_type === 'notification' && public_id.endsWith('.srt')) {
-        console.log(`Subtitle file for ${public_id} is ready at ${secure_url}`);
-    }
-
-    return NextResponse.json({ message: 'Notification received' }, { status: 201 });
+		return NextResponse.json({ received: true }, { status: 200 });
+	} catch (error) {
+		console.error("Notification handling error:", error);
+		return NextResponse.json({ error: "Notification handling failed" }, { status: 500 });
+	}
 }
