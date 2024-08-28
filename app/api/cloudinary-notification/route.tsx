@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(request: NextRequest) {
 	try {
 		const body = await request.json();
-		console.log("Cloudinary Notification:", body);
+		console.log("Cloudinary Notification:", body.info.row_convert.google_speech);
 
 		// You can handle the notification data here, e.g., store the details in your database
 
