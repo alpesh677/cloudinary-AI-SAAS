@@ -10,7 +10,8 @@ const isPublicRoute = createRouteMatcher([
 
 const isPublicApiRoute = createRouteMatcher([
     "/api/video",
-    "/api/subtitle"
+    "/api/subtitle",
+    "/api/cloudinary-notification",
 ])
 
 export default clerkMiddleware((auth,req)=>{
