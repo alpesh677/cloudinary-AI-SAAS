@@ -1,6 +1,6 @@
 'use client'
 import axios from 'axios';
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { motion } from "framer-motion"
 import { FileUpload } from '@/components/ui/file-upload';
 import { source } from "@cloudinary/url-gen/actions/overlay";
@@ -14,7 +14,7 @@ const cld = new Cloudinary({
     }
 });
 
-export default function Page() {
+export default function UploadVideoPage() {
     const [isUploading, setIsUploading] = useState(false);
     const [file, setFile] = useState<File | null>(null);
     const [uploadedVideo, setUploadedVideo] = useState<string | null>(null);
@@ -22,39 +22,31 @@ export default function Page() {
 
     const MAX_FILE_SIZE = 1024 * 1024 * 60;
 
-    const checkSrtStatus = async (publicId: string) => {
-        try {
-            const response = await axios.get(`/api/check-srt-status?publicId=${publicId}`);
-            return response.data.ready;
-        } catch (error) {
-            console.error("Error checking SRT status:", error);
-            return false;
-        }
-    };
+    const pollForSrtFile = async (fullPath: string) => {
+        const maxAttempts = 30;
+        const interval = 2000;
 
-    useEffect(() => {
-        let intervalId: NodeJS.Timeout;
-
-        if (uploadedVideo && !srtReady) {
-            intervalId = setInterval(async () => {
-                const isReady = await checkSrtStatus(uploadedVideo);
-                if (isReady) {
+        for (let i = 0; i < maxAttempts; i++) {
+            try {
+                const response = await axios.get(`/api/check-srt?fullPath=${(fullPath)}`);
+                console.log(response);
+                if (response.data.ready) {
                     setSrtReady(true);
-                    clearInterval(intervalId);
+                    return;
                 }
-            }, 5000); // Check every 5 seconds
+            } catch (error) {
+                console.log('Error checking SRT file:', error);
+            }
+
+            await new Promise(resolve => setTimeout(resolve, interval));
         }
 
-        return () => {
-            if (intervalId) clearInterval(intervalId);
-        };
-    }, [uploadedVideo, srtReady]);
+        console.log('SRT file not ready after maximum attempts');
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!file) {
-            return;
-        }
+        if (!file) return;
 
         setIsUploading(true);
 
@@ -65,61 +57,51 @@ export default function Page() {
             const response = await axios.post("/api/subtitle", formData);
             if (response.status === 201) {
                 const fullPath = response.data.public_id;
-                const publicId = fullPath.split("/").pop();
-                console.log(publicId);
-                setUploadedVideo(publicId);
-                setSrtReady(false); // Reset SRT ready state
+                setUploadedVideo(fullPath);
+
+                await pollForSrtFile(fullPath);
             }
         } catch (error) {
-            console.log(error)
+            console.log(error);
         } finally {
             setIsUploading(false);
         }
-    }
+    };
 
     return (
         <motion.div
-            initial={{
-                opacity: 0,
-                y: 100,
-            }}
-            whileInView={{
-                y: 0,
-                opacity: 0.8
-            }}
-            transition={{
-                type: "ease-in",
-                duration: 0.3,
-            }}
+            initial={{ opacity: 0, y: 100 }}
+            whileInView={{ y: 0, opacity: 0.8 }}
+            transition={{ type: "ease-in", duration: 0.3 }}
             className='container mx-auto p-2'
         >
             <h1 className="text-2xl font-semibold mb-4">Upload Video</h1>
-            {
-                !uploadedVideo ? (
-                    <form onSubmit={handleSubmit} className='space-y-4'>
-                        <div>
-                            <label>
-                                <span className="label-text">Upload Video :</span>
-                            </label>
-                            <FileUpload onChange={(files) => setFile(files[0] || null)} />
-                        </div>
-                        <button
-                            className='btn btn-primary w-full'
-                            type='submit'
-                            disabled={isUploading}
-                        >
-                            {isUploading ? "Uploading..." : "Upload"}
-                        </button>
-                    </form>
-                ) : srtReady ? (
+            {!uploadedVideo ? (
+                <form onSubmit={handleSubmit} className='space-y-4'>
+                    <div>
+                        <label>
+                            <span className="label-text">Upload Video :</span>
+                        </label>
+                        <FileUpload onChange={(files) => setFile(files[0] || null)} />
+                    </div>
+                    <button
+                        className='btn btn-primary w-full'
+                        type='submit'
+                        disabled={isUploading}
+                    >
+                        {isUploading ? "Uploading..." : "Upload"}
+                    </button>
+                </form>
+            ) : (
+                srtReady ? (
                     <AdvancedVideo
                         cldVid={cld.video(uploadedVideo).overlay(source(subtitles(`${uploadedVideo}.srt`)))}
                         plugins={[]}
                     />
                 ) : (
-                    <div>Generating subtitles... Please wait.</div>
+                    <p>Processing subtitles... Please wait.</p>
                 )
-            }
+            )}
         </motion.div>
-    )
+    );
 }
