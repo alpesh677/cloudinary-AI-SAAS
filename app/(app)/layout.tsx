@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useUser, useClerk } from '@clerk/nextjs'
-import { ImageIcon, LayoutDashboardIcon, LogOutIcon, MenuIcon, Rotate3D, Share2Icon, UploadIcon } from 'lucide-react'
+import { ImageIcon, LayoutDashboardIcon, LogOutIcon, MenuIcon, Rotate3D, Share2Icon, UploadIcon,Images } from 'lucide-react'
 import Image from 'next/image'
 
 
@@ -16,6 +16,12 @@ const sideBarItems = [
     },
     { href: "/video-upload", label: "Video Upload", icon: UploadIcon, description: "Upload videos,compress them!" },
     { href: "/Social-share", label: "Social Share", icon: Share2Icon, description: "Customize your photos!" },
+    {
+        href: "/recolor",
+        label: "Recolor",
+        icon: Images,
+        description: "Recolor your images"
+    }
 ]
 
 export default function Layout({

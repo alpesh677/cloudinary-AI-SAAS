@@ -53,9 +53,12 @@ export async function POST(request: NextRequest) {
 			},
 		);
 
+		console.log("Upload Image Success", result);
 		return NextResponse.json(
 			{
 				public_id: result.public_id,
+				width : result.width,
+				height : result.height
 			},
 			{ status: 201 },
 		);
