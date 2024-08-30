@@ -37,6 +37,7 @@ const imageFormats = {
     "Square": ar1X1(),
     "Portrait": "9:16",
     "Landscape": ar16X9(),
+    "Custom": null
 };
 
 type imageFormats = keyof typeof imageFormats
@@ -50,13 +51,15 @@ export default function GenerativeFill() {
     const [width, setWidth] = useState(null);
     const [height, setHeight] = useState(null);
     const [selectedFormat, setSelectedFormat] = useState<imageFormats>("Square")
-    const [selectedDirection, setSelectedDirection] = useState<Direction>('center')
+    const [selectedDirection, setSelectedDirection] = useState<Direction>('center');
+    const [customHeight, setCustomHeight] = useState<number | null>(null);
+    const [customWidth, setCustomWidth] = useState<number | null>(null);
 
     useEffect(() => {
-        if (uploadedImage&& (selectedDirection || selectedFormat)) {
+        if (uploadedImage && (selectedDirection || selectedFormat || customHeight || customWidth)) {
             setIsTransforming(true);
         }
-    }, [uploadedImage, selectedDirection, selectedFormat])
+    }, [uploadedImage, selectedDirection, selectedFormat, customHeight, customWidth]);
 
     const handleSubmit = async (files: File[]) => {
 
@@ -98,19 +101,25 @@ export default function GenerativeFill() {
         setSelectedDirection(direction)
     }
 
-    let imgUrl = null;
-    let img;
-    if (uploadedImage) {
-        console.log(selectedDirection)
-        img = cld.image(uploadedImage).resize(
-            pad()
-                .aspectRatio(imageFormats[selectedFormat])
+
+    const img = cld.image(uploadedImage ?? "").resize(
+        selectedFormat === "Custom" && customWidth && customHeight
+            ? pad()
+                .width(customWidth)
+                .height(customHeight)
                 .gravity(compass(directionLabels[selectedDirection]))
                 .background(generativeFill())
-        );
-        imgUrl = img.toURL();
-        console.log("Generated Image URL:", imgUrl);
-    }
+            : selectedFormat !== "Custom" && imageFormats[selectedFormat]
+                ? pad()
+                    .aspectRatio(imageFormats[selectedFormat]!)
+                    .gravity(compass(directionLabels[selectedDirection]))
+                    .background(generativeFill())
+                : pad()
+                    .gravity(compass(selectedDirection))
+                    .background(generativeFill())
+    );
+
+    console.log("Generated Cloudinary URL:", img.toURL());
 
 
     const renderDot = (direction: Direction) => {
@@ -203,6 +212,34 @@ export default function GenerativeFill() {
                                         }
                                     </select>
                                 </div>
+                                {selectedFormat === "Custom" && (
+                                    <div className="flex flex-col gap-4 mt-4">
+                                        <div>
+                                            <label className="label">
+                                                <span className="label-text">Custom Width</span>
+                                            </label>
+                                            <input
+                                                type="number"
+                                                className="input input-bordered"
+                                                placeholder="Enter width"
+                                                value={customWidth ?? ""}
+                                                onChange={(e) => setCustomWidth(Number(e.target.value))}
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="label">
+                                                <span className="label-text">Custom Height</span>
+                                            </label>
+                                            <input
+                                                type="number"
+                                                className="input input-bordered"
+                                                placeholder="Enter height"
+                                                value={customHeight ?? ""}
+                                                onChange={(e) => setCustomHeight(Number(e.target.value))}
+                                            />
+                                        </div>
+                                    </div>
+                                )}
 
                                 <div className="flex flex-col items-center space-y-4">
                                     <label className="label">
