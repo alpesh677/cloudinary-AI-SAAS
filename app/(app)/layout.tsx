@@ -20,7 +20,19 @@ const sideBarItems = [
         href: "/recolor",
         label: "Recolor",
         icon: Images,
-        description: "Recolor your images"
+        description: "Recolor specific part of your images"
+    },
+    {
+        href : "/restore",
+        label: "Restore",
+        icon: Rotate3D,
+        description: "Clear your images "
+    },
+    {
+        href: "/generative-Fill",
+        label : "Generative-Fill",
+        icon: Images,
+        description: "Generate Background your images"
     }
 ]
 
